@@ -10,6 +10,8 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("-----Spawner-----")]
     [SerializeField]
+    private HealthBar spawnerHealthBar;
+    [SerializeField]
     protected float spawnerMaxHP;
     [SerializeField]
     private GameObject spawnerSprite;
@@ -28,6 +30,7 @@ public class EnemySpawner : MonoBehaviour
 
     private float currentSpawnerHP;
     private int enemyCount = 0;
+    private bool _isSpawnerActive;
 
     private void Awake()
     {
@@ -39,12 +42,13 @@ public class EnemySpawner : MonoBehaviour
     {
         currentSpawnerHP = spawnerMaxHP;
         StartCoroutine(SpawnTime());
+        _isSpawnerActive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void DamageToSpawner(float damage)
     {
@@ -52,19 +56,28 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log(currentSpawnerHP);
         if (currentSpawnerHP <= 0)
         {
+            Instantiate(spawnerSprite, transform.position, Quaternion.identity);
             FX _fx = (FX)PoolManager.Instance.Spawn(fxName);
             _fx.transform.position = transform.position;
             _fx.transform.rotation = transform.rotation;
             Destroy(gameObject);
-            Instantiate(spawnerSprite, transform.position, Quaternion.identity);
+            _isSpawnerActive = false;
         }
+        spawnerHealthBar.UpdateHealthBar(spawnerMaxHP, currentSpawnerHP);
     }
 
     public void SpawnEnemy()
     {
-        if (!IsObtacle())
+        if(_isSpawnerActive)
         {
-            StartCoroutine(SpawnTime());
+            if (!IsObtacle())
+            {
+                StartCoroutine(SpawnTime());
+            }
+            else
+            {
+                return;
+            }
         }
         else
         {

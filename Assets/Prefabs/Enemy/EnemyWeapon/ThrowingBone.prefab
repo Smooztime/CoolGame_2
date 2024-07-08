@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: c45960a6a3b25ec48bad92da09b1fd50, type: 3}
       propertyPath: m_SortingLayer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: c45960a6a3b25ec48bad92da09b1fd50, type: 3}
       propertyPath: m_SortingLayerID
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eae83810ec27af4995533d699fa0814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneDamage: 0
+  boneDamage: 1
 --- !u!50 &1687816794491972186
 Rigidbody2D:
   serializedVersion: 4

@@ -184,11 +184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 915205903721940351, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -960.03
+      value: -959.9962
       objectReference: {fileID: 0}
     - target: {fileID: 915205903721940351, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -537.96
+      value: -539.01
       objectReference: {fileID: 0}
     - target: {fileID: 915205903721940351, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -305,7 +305,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 114bf950c53e6fa4099f4ebc3ea06af8, type: 2}
     - target: {fileID: 3626916397498700004, guid: 3b40f3ba05a232745900798f8901922d, type: 3}
       propertyPath: m_SortingLayer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 3b40f3ba05a232745900798f8901922d, type: 3}
       propertyPath: m_SortingLayerID
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealthBar: {fileID: 6549553963546019277}
-  enemyMaxHP: 50
+  enemyMaxHP: 100
   enemyDamage: 2
   EnemySpeed: 8
   distanceBetween: 15
@@ -430,8 +430,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.96875}
-  m_Size: {x: 1.375, y: 1.5625}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.8, y: 1.8}
   m_Direction: 0
 --- !u!50 &2280447225629630620
 Rigidbody2D:

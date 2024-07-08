@@ -4,33 +4,48 @@ using UnityEngine;
 
 public class DoorActive : MonoBehaviour
 {
+    [SerializeField] 
+    private LightTrigger[] lightTriggerOn;
     [SerializeField]
-    private GameObject[] lightTriggerOn;
+    private GameObject door;
 
-    private bool canOpenDoor = false;
-    // Start is called before the first frame update
-    void Start()
+    private bool allLightOn;
+
+    private void FixedUpdate()
     {
-        
+        CheckLight();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CheckLight()
     {
-        foreach(GameObject on in lightTriggerOn)
+        allLightOn = false;
+        foreach (var lightTrigger in lightTriggerOn)
         {
-            if (on.gameObject.activeSelf)
+            if (!lightTrigger.IsLightOn())
             {
-                canOpenDoor = true;
+                allLightOn = true;
+                break;
             }
-            else
-            {
-                canOpenDoor = false;
-            }
+            
         }
-        if (canOpenDoor == true)
+
+        if (!allLightOn)
         {
-            gameObject.SetActive(false);
+            OpenDoor();
         }
+        else
+        {
+            CloseDoor();
+        }
+    }
+
+    private void OpenDoor()
+    {
+        door.gameObject.SetActive(false);
+    }
+
+    private void CloseDoor()
+    {
+        door.gameObject.SetActive(true);
     }
 }

@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
     protected float currentEnemyHP;
     private float distance;
     private Animator _anim;
+    private bool _isAlive = true;
     
 
     private void Awake()
@@ -52,7 +53,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DamageToEnemy(float damage)
@@ -67,16 +68,18 @@ public class Enemy : MonoBehaviour
             gameObject.GetComponent<Collider2D>().enabled = false;
             SoundManager.PlaySound(SoundType.EnemyDie);
             StartCoroutine(EnemyDestroy());
+            _isAlive = false;
             DropPotion();
             EnemySpawner.Instance.EnemySubtract(1);
             EnemySpawner.Instance.SpawnEnemy();
         }
         enemyHealthBar.UpdateHealthBar(enemyMaxHP, currentEnemyHP);
+        
     }
 
     private IEnumerator EnemyDestroy()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         Destroy(gameObject);
     }
 
@@ -85,11 +88,18 @@ public class Enemy : MonoBehaviour
         distance = Vector2.Distance(transform.position, playerTransform.position);
         Vector2 direction = (playerTransform.position - transform.position).normalized;
 
-        if (distance < distanceBetween)
+        if (_isAlive)
         {
-            transform.position = Vector2.MoveTowards(this.transform.position, playerTransform.position, EnemySpeed * Time.fixedDeltaTime);
-            _anim.SetFloat("Horizontal", direction.x);
-            _anim.SetFloat("Vertical", direction.y);
+            if (distance < distanceBetween)
+            {
+                transform.position = Vector2.MoveTowards(this.transform.position, playerTransform.position, EnemySpeed * Time.fixedDeltaTime);
+                _anim.SetFloat("Horizontal", direction.x);
+                _anim.SetFloat("Vertical", direction.y);
+            }
+        }
+        else
+        {
+            return;
         }
     }
 
