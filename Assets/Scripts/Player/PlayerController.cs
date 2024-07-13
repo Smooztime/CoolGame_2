@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform _gunPosition;
 
+    private PlayerInputController _input;
     private float currentPlayerHealth;
     private Animator _animator;
     private Vector2 _movement;
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private bool _isGamePause;
     private int changeSlot;
     private float cooldown;
+    private LightTrigger _lightTrigger;
 
     private void Awake()
     {
@@ -57,6 +59,12 @@ public class PlayerController : MonoBehaviour
         _trailRenderer = GetComponent<TrailRenderer>();
         aimTransform = transform.Find("Aim");
         _weapon = _gunPosition.GetComponentInChildren<GunSystem>();
+        _input = GetComponent<PlayerInputController>();
+    }
+
+    private void OnEnable()
+    {
+        _input.OnInteract += Interact;
     }
 
     // Start is called before the first frame update
@@ -97,6 +105,7 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat("Horizontal", lookDir.x);
         _animator.SetFloat("Vertical", lookDir.y);
         ChangeWeapon();
+        Debug.Log(_lightTrigger);
     }
     
 
@@ -301,9 +310,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PlayerInteract()
+    public void Interact()
     {
-
+        if (_lightTrigger != null)
+        {
+            _lightTrigger.ToggleLights();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -322,5 +334,12 @@ public class PlayerController : MonoBehaviour
             changeSlot = _gunPosition.childCount - 1;
             Destroy(other.gameObject);
         }
+
+        _lightTrigger = other.GetComponent<LightTrigger>();
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        _lightTrigger = null;
     }
 }

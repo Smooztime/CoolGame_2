@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
 {
+    public event Action OnInteract;
     private PlayerController _playerController;
     private PlayerInput _playerInput;
 
@@ -23,7 +25,10 @@ public class PlayerInputController : MonoBehaviour
         _playerInput.PlayerMovement.WeaponSlot1.performed += value => _playerController.WeaponSlot1(0);
         _playerInput.PlayerMovement.WeaponSlot2.performed += value => _playerController.WeaponSlot1(1);
         _playerInput.PlayerMovement.WeaponSlot3.performed += value => _playerController.WeaponSlot1(2);
-        _playerInput.PlayerMovement.Interact.performed += value => _playerController.PlayerInteract();
+        _playerInput.PlayerMovement.Interact.performed += value => 
+        {
+            OnInteract?.Invoke();
+        };
 
         _playerInput.Enable();
     }

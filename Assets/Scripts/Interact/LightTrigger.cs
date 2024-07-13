@@ -21,14 +21,6 @@ public class LightTrigger : MonoBehaviour
         
     }
 
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out PlayerController playerController))
-        {
-            ToggleLights();
-        }
-    }
     public void ToggleLights()
     {
         _isLightOn = !_isLightOn; //change value of _isLightOn = true because !_isLightOn = true
