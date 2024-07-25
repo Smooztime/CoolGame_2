@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,18 +11,24 @@ public class Enemy : MonoBehaviour
     [Header("-----Enemy Health Bar-----")]
     [SerializeField]
     HealthBar enemyHealthBar;
+    [SerializeField]
+    private string damageText;
+    [SerializeField]
+    private Transform damageTextPos;
 
     [Header("-----Enemy Stat-----")]
     [SerializeField]
-    protected float enemyMaxHP;
+    protected int enemyMaxHP;
     [SerializeField]
-    protected float enemyDamage;
+    protected int enemyDamage;
     [SerializeField]
     protected float EnemySpeed;
     [SerializeField]
     protected float distanceBetween;
     [SerializeField]
     protected string enemyWeapon;
+    [SerializeField]
+    private bool _haveSpawner;
 
     [Header("-----VFX-----")]
     [SerializeField]
@@ -31,10 +38,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private string itemName;
 
-    protected float currentEnemyHP;
+    protected int currentEnemyHP;
     private float distance;
     private Animator _anim;
     private bool _isAlive = true;
+    
     
 
     private void Awake()
@@ -56,7 +64,7 @@ public class Enemy : MonoBehaviour
 
     }
 
-    public void DamageToEnemy(float damage)
+    public void DamageToEnemy(int damage)
     {
         currentEnemyHP -= damage;
         Debug.Log(currentEnemyHP);
@@ -70,11 +78,30 @@ public class Enemy : MonoBehaviour
             StartCoroutine(EnemyDestroy());
             _isAlive = false;
             DropPotion();
-            EnemySpawner.Instance.EnemySubtract(1);
-            EnemySpawner.Instance.SpawnEnemy();
+            if (_haveSpawner == true)
+            {
+                EnemySpawner.Instance.EnemySubtract(1);
+                EnemySpawner.Instance.SpawnEnemy();
+            }
+            else
+            {
+                return;
+            }
         }
         enemyHealthBar.UpdateHealthBar(enemyMaxHP, currentEnemyHP);
-        
+
+        if (gameObject != null)
+        {
+            ShowDamageText(damage);
+        }
+    }
+
+    private void ShowDamageText(int damage)
+    {
+        DamageText _damageText = (DamageText)PoolManager.Instance.Spawn(damageText);
+        _damageText.transform.position = damageTextPos.position + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+        _damageText.transform.rotation = damageTextPos.rotation;
+        _damageText.GetComponentInChildren<TextMeshPro>().text = damage.ToString();
     }
 
     private IEnumerator EnemyDestroy()
@@ -114,7 +141,7 @@ public class Enemy : MonoBehaviour
     private void DropPotion()
     {
         int chance = Random.Range(0, 101);
-        if(chance > 70)
+        if(chance > 80)
         {
             Potion potion = (Potion)PoolManager.Instance.Spawn(itemName);
             potion.transform.position = transform.position;

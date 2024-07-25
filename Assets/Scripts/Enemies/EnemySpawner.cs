@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
@@ -12,7 +13,11 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private HealthBar spawnerHealthBar;
     [SerializeField]
-    protected float spawnerMaxHP;
+    private string damageText;
+    [SerializeField]
+    private Transform damageTextPos;
+    [SerializeField]
+    protected int spawnerMaxHP;
     [SerializeField]
     private GameObject spawnerSprite;
     [SerializeField]
@@ -28,7 +33,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private LayerMask layerCheck;
 
-    private float currentSpawnerHP;
+    private int currentSpawnerHP;
     private int enemyCount = 0;
     private bool _isSpawnerActive;
 
@@ -50,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
     {
 
     }
-    public void DamageToSpawner(float damage)
+    public void DamageToSpawner(int damage)
     {
         currentSpawnerHP -= damage;
         Debug.Log(currentSpawnerHP);
@@ -64,6 +69,18 @@ public class EnemySpawner : MonoBehaviour
             _isSpawnerActive = false;
         }
         spawnerHealthBar.UpdateHealthBar(spawnerMaxHP, currentSpawnerHP);
+
+        if (gameObject != null)
+        {
+            ShowDamageText(damage);
+        }
+    }
+    private void ShowDamageText(int damage)
+    {
+        DamageText _damageText = (DamageText)PoolManager.Instance.Spawn(damageText);
+        _damageText.transform.position = damageTextPos.position + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+        _damageText.transform.rotation = damageTextPos.rotation;
+        _damageText.GetComponentInChildren<TextMeshPro>().text = damage.ToString();
     }
 
     public void SpawnEnemy()

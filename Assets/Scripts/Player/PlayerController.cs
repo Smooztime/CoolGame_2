@@ -12,13 +12,13 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer _trailRenderer;
     private GunSystem _weapon;
 
-    [Header("-----Player Health Bar")]
+    [Header("-----Player Health Bar-----")]
     [SerializeField]
     private HealthBar _healthBar;
 
-    [Header("----------Player Stat----------")]
+    [Header("-----Player Stat-----")]
     [SerializeField]
-    private float playerHealth;
+    private int playerHealth;
     [SerializeField]
     private float movementSpeed = 10f;
     [SerializeField]
@@ -27,15 +27,17 @@ public class PlayerController : MonoBehaviour
     private float dashDuration = 0.5f;
     [SerializeField]
     private float immortalTime;
+    [SerializeField]
+    private GameObject barrier;
 
-    [Header("----------Gun----------")]
+    [Header("-----Gun-----")]
     [SerializeField]
     private int selectedWeapon = 0;
     [SerializeField]
     private Transform _gunPosition;
 
     private PlayerInputController _input;
-    private float currentPlayerHealth;
+    private int currentPlayerHealth;
     private Animator _animator;
     private Vector2 _movement;
     private Vector2 _mousePosition;
@@ -86,6 +88,15 @@ public class PlayerController : MonoBehaviour
         {
             WeaponHoldShoot();
         }
+
+        if(cooldown <= 0)
+        {
+            barrier.gameObject.SetActive(false);
+        }
+        else
+        {
+            barrier.gameObject.SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -105,16 +116,14 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat("Horizontal", lookDir.x);
         _animator.SetFloat("Vertical", lookDir.y);
         ChangeWeapon();
-        Debug.Log(_lightTrigger);
     }
     
 
-    public void DamageToPlayer(float damage)
+    public void DamageToPlayer(int damage)
     {
         if (cooldown <= 0f)
         {
             currentPlayerHealth -= damage;
-            immortalTime = 3f;
             if (currentPlayerHealth <= 0)
             {
                 GameManager.ExitGame();
@@ -124,7 +133,7 @@ public class PlayerController : MonoBehaviour
         _healthBar.UpdateHealthBar(playerHealth, currentPlayerHealth);
     }
 
-    public void Heal(float heal)
+    public void Heal(int heal)
     {
         Debug.Log(currentPlayerHealth);
         currentPlayerHealth += heal;
@@ -204,7 +213,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            aimLocalScale.x = +1f;
+            aimLocalScale.y = +1f;
         }
         aimTransform.localScale = aimLocalScale;
     }
@@ -330,6 +339,7 @@ public class PlayerController : MonoBehaviour
             newWeapon.transform.parent = _gunPosition;
             newWeapon.transform.position = _gunPosition.position;
             newWeapon.transform.rotation = _gunPosition.rotation;
+            newWeapon.transform.localScale = Vector3.one;
             _weapon = newWeapon.GetComponent<GunSystem>();
             changeSlot = _gunPosition.childCount - 1;
             Destroy(other.gameObject);

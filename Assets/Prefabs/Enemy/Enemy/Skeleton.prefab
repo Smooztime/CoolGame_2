@@ -159,11 +159,42 @@ Transform:
   m_GameObject: {fileID: 7512813078251059082}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.036, y: 0, z: 0}
+  m_LocalPosition: {x: 1.2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3620580846639413469}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8896727431761782497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1732659020438462253}
+  m_Layer: 8
+  m_Name: DamageText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1732659020438462253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8896727431761782497}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.26, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2991272138761316543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4960336716853172146
 PrefabInstance:
@@ -187,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 098ebb64c0ae35b4d9957fd4f001a14e, type: 2}
     - target: {fileID: 3626916397498700004, guid: 75743a7f8067c0c4c946f6c0f2a648fd, type: 3}
       propertyPath: m_SortingLayer
-      value: 10
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 75743a7f8067c0c4c946f6c0f2a648fd, type: 3}
       propertyPath: m_SortingLayerID
@@ -242,6 +273,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: 75743a7f8067c0c4c946f6c0f2a648fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3548035826358821595}
+    - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: 75743a7f8067c0c4c946f6c0f2a648fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1732659020438462253}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 75743a7f8067c0c4c946f6c0f2a648fd, type: 3}
       insertIndex: -1
@@ -271,11 +305,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealthBar: {fileID: 1260717054703046840}
+  damageText: DamageText
+  damageTextPos: {fileID: 1732659020438462253}
   enemyMaxHP: 200
   enemyDamage: 1
   EnemySpeed: 3
   distanceBetween: 15
   enemyWeapon: ThrowingBone
+  _haveSpawner: 1
   fxName: Spark01
   itemName: Red
   weaponTime: 0

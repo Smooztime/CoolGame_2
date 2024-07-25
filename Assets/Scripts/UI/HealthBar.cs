@@ -24,9 +24,9 @@ public class HealthBar : MonoBehaviour
         
     }
 
-    public void UpdateHealthBar(float maxHP, float currentHP)
+    public void UpdateHealthBar(int maxHP, int currentHP)
     {
-        healthBarSlider.value = currentHP / maxHP; //Set up Health to player
+        healthBarSlider.value = (float)currentHP / (float)maxHP; //Set up Health to player
         fill.color = gradient.Evaluate(healthBarSlider.normalizedValue);
     }
 }

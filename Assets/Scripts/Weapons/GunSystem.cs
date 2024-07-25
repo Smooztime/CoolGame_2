@@ -15,7 +15,9 @@ public class GunSystem : MonoBehaviour
 
     [Header("-----Gun Stat-----")]
     [SerializeField]
-    private float gunDamage;
+    private int minDamage;
+    [SerializeField]
+    private int maxDamage;
     [SerializeField]
     private float spread;
     [SerializeField]
@@ -30,6 +32,8 @@ public class GunSystem : MonoBehaviour
     private float gunVolume = 1;
     [SerializeField]
     private bool holdShoot;
+
+    private int gunDamage;
 
     public virtual void Shoot()
     {
@@ -47,6 +51,7 @@ public class GunSystem : MonoBehaviour
 
     private void ShootingRay()
     {
+        gunDamage = Random.Range(minDamage, maxDamage + 1);
         Vector3 direction = _muzzleFlashPosition.right;
 
         float x = Random.Range(-spread, spread);
@@ -57,48 +62,25 @@ public class GunSystem : MonoBehaviour
         TrailRenderer tracer = Instantiate(tracerEffect, _muzzleFlashPosition.position, Quaternion.identity);
         tracer.AddPosition(_muzzleFlashPosition.position);
 
-        if (!holdShoot)
-        {
-            SoundManager.PlayLoop(gunAudioClip);
-            SoundManager.AdjustSFXVolume(1f);
+        SoundManager.PlayLoop(gunAudioClip);
+        SoundManager.AdjustSFXVolume(1f);
 
-            if (hit.collider != null)
+        if (hit.collider != null)
+        {
+            tracer.transform.position = hit.point;
+            if (hit.collider.TryGetComponent(out EnemySpawner spawnerDamage))
             {
-                tracer.transform.position = hit.point;
-                if (hit.collider.TryGetComponent(out EnemySpawner spawnerDamage))
-                {
-                    spawnerDamage.DamageToSpawner(gunDamage);
-                }
-                if (hit.collider.TryGetComponent(out Enemy enemyDamage))
-                {
-                    enemyDamage.DamageToEnemy(gunDamage);
-                }
+                spawnerDamage.DamageToSpawner(gunDamage);
             }
-            else
+            if (hit.collider.TryGetComponent(out Enemy enemyDamage))
             {
-                Vector3 pos = _muzzleFlashPosition.position + direction * range;
-                tracer.transform.position = pos;
+                enemyDamage.DamageToEnemy(gunDamage);
             }
         }
         else
         {
-            if (hit.collider != null)
-            {
-                tracer.transform.position = hit.point;
-                if (hit.collider.TryGetComponent(out EnemySpawner spawnerDamage))
-                {
-                    spawnerDamage.DamageToSpawner(gunDamage * Time.fixedDeltaTime);
-                }
-                if (hit.collider.TryGetComponent(out Enemy enemyDamage))
-                {
-                    enemyDamage.DamageToEnemy(gunDamage * Time.fixedDeltaTime);
-                }
-            }
-            else
-            {
-                Vector3 pos = _muzzleFlashPosition.position + direction * range;
-                tracer.transform.position = pos;
-            }
+            Vector3 pos = _muzzleFlashPosition.position + direction * range;
+            tracer.transform.position = pos;
         }
     }
 

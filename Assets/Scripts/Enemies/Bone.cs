@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bone : PoolObject
 {
     [SerializeField]
-    private float boneDamage;
+    private int boneDamage;
     // Start is called before the first frame update
     void Start()
     {

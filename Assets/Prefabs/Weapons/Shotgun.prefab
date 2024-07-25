@@ -50,7 +50,8 @@ MonoBehaviour:
   _muzzleFlashPosition: {fileID: 2570614999236236401}
   muzzleFlashName: MuzzleFlash02
   tracerEffect: {fileID: 2625194065172106202, guid: 1378595116e46734f9f5d1e8bbe73ea6, type: 3}
-  gunDamage: 10
+  minDamage: 5
+  maxDamage: 10
   spread: 0.3
   range: 8
   amountOfProjectile: 10

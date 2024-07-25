@@ -49,6 +49,12 @@ TagManager:
   - name: Wall
     uniqueID: 1299751633
     locked: 0
+  - name: Door
+    uniqueID: 2169391697
+    locked: 0
+  - name: Decorate
+    uniqueID: 356696169
+    locked: 0
   - name: Line
     uniqueID: 2889299827
     locked: 0
@@ -67,6 +73,9 @@ TagManager:
   - name: Weapons
     uniqueID: 3165656097
     locked: 0
+  - name: Barrier
+    uniqueID: 4112496803
+    locked: 0
   - name: Item
     uniqueID: 3001342293
     locked: 0
@@ -75,4 +84,7 @@ TagManager:
     locked: 0
   - name: FX
     uniqueID: 2130591685
+    locked: 0
+  - name: Text
+    uniqueID: 3191487317
     locked: 0
