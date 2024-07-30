@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private TrailRenderer _trailRenderer;
     private GunSystem _weapon;
+
+    [SerializeField]
+    private TMP_Text _textUI;
 
     [Header("-----Player Health Bar-----")]
     [SerializeField]
@@ -126,7 +130,9 @@ public class PlayerController : MonoBehaviour
             currentPlayerHealth -= damage;
             if (currentPlayerHealth <= 0)
             {
-                GameManager.ExitGame();
+                Time.timeScale = 0f;
+                _textUI.text = "Defeat";
+                _textUI.color = Color.red;
             }
             cooldown = immortalTime;
         }
@@ -275,7 +281,7 @@ public class PlayerController : MonoBehaviour
 
     public void WeaponShoot()
     {
-        if (!_isShoot)
+        if (!_isShoot && Time.timeScale == 1f)
         {
             _isShoot = true;
             _weapon?.Shoot();
@@ -289,7 +295,7 @@ public class PlayerController : MonoBehaviour
 
     private void WeaponHoldShoot()
     {
-        if(_holdShoot == 1)
+        if(_holdShoot == 1 && Time.timeScale == 1f)
         {
             _isShoot = true;
             _weapon?.Shoot();
@@ -311,6 +317,7 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Pause();
             _isGamePause = true;
+            _textUI.text = "Pause";
         }
         else
         {

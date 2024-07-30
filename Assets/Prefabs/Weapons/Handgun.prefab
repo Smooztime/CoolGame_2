@@ -89,7 +89,7 @@ MonoBehaviour:
     m_Bits: 960
   gunAudioClip: {fileID: 8300000, guid: b48193eb32148054784d1c02465bb8d3, type: 3}
   gunVolume: 1
-  holdShoot: 0
+  holdShoot: 1
 --- !u!1 &6041259881569944179
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129311199
-  m_SortingLayer: 8
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: -8743985451709654404, guid: 3eaac0d71040526448ff7952906838c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
