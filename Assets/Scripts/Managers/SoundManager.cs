@@ -7,7 +7,8 @@ public enum SoundType
 {
     BackGroundMusic,
     EnemyDie,
-    Dash
+    Dash,
+    BombExplode
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -23,7 +24,15 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()

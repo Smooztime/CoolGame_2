@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     protected string enemyWeapon;
     [SerializeField]
-    private bool _haveSpawner;
+    protected bool _haveSpawner;
 
     [Header("-----VFX-----")]
     [SerializeField]
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
         }
         enemyHealthBar.UpdateHealthBar(enemyMaxHP, currentEnemyHP);
 
-        if (gameObject != null)
+        if (gameObject != null && currentEnemyHP > 0)
         {
             ShowDamageText(damage);
         }
@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
         _damageText.GetComponentInChildren<TextMeshPro>().text = damage.ToString();
     }
 
-    private IEnumerator EnemyDestroy()
+    protected virtual IEnumerator EnemyDestroy()
     {
         yield return new WaitForSeconds(0.2f);
         Destroy(gameObject);

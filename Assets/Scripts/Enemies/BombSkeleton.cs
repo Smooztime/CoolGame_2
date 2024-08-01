@@ -27,10 +27,18 @@ public class BombSkeleton : Enemy
             FX _fx = (FX)PoolManager.Instance.Spawn(bombFX);
             _fx.transform.position = transform.position;
             _fx.transform.rotation = transform.rotation;
+            SoundManager.PlaySound(SoundType.BombExplode);
             Destroy(gameObject);
             player.DamageToPlayer(enemyDamage);
-            EnemySpawner.Instance.EnemySubtract(1);
-            EnemySpawner.Instance.SpawnEnemy();
+            if (_haveSpawner == true)
+            {
+                EnemySpawner.Instance.EnemySubtract(1);
+                EnemySpawner.Instance.SpawnEnemy();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

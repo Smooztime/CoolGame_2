@@ -6,63 +6,95 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject pauseMenu;
+    private GameObject splashScreen;
 
-    private static GameManager instance;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private SaveSystem _saveSystem;
+
+    private string _currentScene = "";
+
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+
+        Instance = this;
+
+        SceneManager.sceneLoaded += Initialize;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        pauseMenu.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        ShowUI();
-    }
-
-    public static void Pause()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public static void Resume()
-    {
         Time.timeScale = 1f;
     }
 
-    public void Restart()
+    private void Update()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+    }
+
+    private void Initialize(Scene scene, LoadSceneMode sceneMode)
+    {
+        Debug.Log("Loaded Game Manager");
+        var playerController = FindObjectOfType<PlayerController>();
+        if(playerController != null ) player = playerController.gameObject;
+
+        _saveSystem = FindObjectOfType<SaveSystem>();
+
+        if(_saveSystem == null) return;
+
+        if(player != null && _saveSystem.LoadedData != null)
+        {
+            var health = player.GetComponent<PlayerController>();
+            health.CurrentPlayerHealth = _saveSystem.LoadedData.playerHealth;
+        }
+    }
+
+    public void LoadSave()
+    {
+        if (_saveSystem.LoadedData != null)
+        {
+            string sceneName = SceneUtility.GetScenePathByBuildIndex(_saveSystem.LoadedData.sceneIndex);
+            LoadScene(sceneName);
+        }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        splashScreen.SetActive(true);
+
+        if (_currentScene != "")
+        {
+            SceneManager.UnloadSceneAsync(_currentScene);
+        }
+
+        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        _currentScene = sceneName;
         Time.timeScale = 1f;
-        pauseMenu.SetActive(false);
+        SceneManager.sceneLoaded += OnNewSceneLoaded;
     }
 
-    public void MainMenu()
+    public void SaveData()
     {
-        SceneManager.LoadScene("MainMenu");
-    }
-
-    public void ExitGame() //To stop playing game
-    {
-        Application.Quit();
-    }
-
-    private void ShowUI()
-    {
-        if(Time.timeScale == 0f)
+        if(player != null)
         {
-            pauseMenu.SetActive(true);
+            _saveSystem.SaveData(SceneManager.GetActiveScene().buildIndex + 1, player.GetComponent<PlayerController>().CurrentPlayerHealth);
         }
-        else
-        {
-            pauseMenu.SetActive(false);
-        }
+    }
+
+    private void OnNewSceneLoaded(Scene sceneName, LoadSceneMode mode)
+    {
+        SceneManager.SetActiveScene(sceneName);
+
+        splashScreen.SetActive(false);
+
+        SceneManager.sceneLoaded -= OnNewSceneLoaded;
     }
 }

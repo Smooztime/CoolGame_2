@@ -47,14 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a52ea7c56694b428126d197a5dcedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponImages: {fileID: 21300000, guid: bf5e761a26021c94e99e7dfffb84656a, type: 3}
   _muzzleFlashPosition: {fileID: 2570614999236236401}
   muzzleFlashName: MuzzleFlash02
   tracerEffect: {fileID: 2625194065172106202, guid: 1378595116e46734f9f5d1e8bbe73ea6, type: 3}
-  minDamage: 5
-  maxDamage: 10
-  spread: 0.3
-  range: 8
+  minDamage: 8
+  maxDamage: 15
+  spread: 0.5
+  range: 3
   amountOfProjectile: 10
+  rateOfFire: 0
   _target:
     serializedVersion: 2
     m_Bits: 960
@@ -295,7 +297,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129311199
-  m_SortingLayer: 8
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 5690657821529167715, guid: 42bc6d2cbc38975409d1016192c9af04, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -504,15 +504,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5021020475446763122, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: gradient.key0.r
-      value: 0.2924528
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5021020475446763122, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: gradient.key1.g
-      value: 0.045223214
+      value: 0.05490196
       objectReference: {fileID: 0}
     - target: {fileID: 5021020475446763122, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: gradient.key1.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021020475446763122, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: gradient.key2.g
@@ -527,12 +527,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5196204520435559200, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5196204520435559200, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_Color.g
-      value: 0.047058824
+      value: 0.05490196
       objectReference: {fileID: 0}
     - target: {fileID: 5196204520435559200, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5550042817103242581, guid: 94c2fbf2302131043b421aae43f8b6b3, type: 3}
       propertyPath: m_AnchorMax.x

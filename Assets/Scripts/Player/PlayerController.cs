@@ -4,6 +4,7 @@ using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -13,12 +14,13 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer _trailRenderer;
     private GunSystem _weapon;
 
+    [Header("-----Player UI-----")]
     [SerializeField]
     private TMP_Text _textUI;
-
-    [Header("-----Player Health Bar-----")]
     [SerializeField]
-    private HealthBar _healthBar;
+    private Image[] _weaponImages;
+    [SerializeField]
+    private Image[] borders;
 
     [Header("-----Player Stat-----")]
     [SerializeField]
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
     private Transform _gunPosition;
 
     private PlayerInputController _input;
-    private int currentPlayerHealth;
+    private int currentPlayerHealth = 0;
     private Animator _animator;
     private Vector2 _movement;
     private Vector2 _mousePosition;
@@ -56,6 +58,21 @@ public class PlayerController : MonoBehaviour
     private int changeSlot;
     private float cooldown;
     private LightTrigger _lightTrigger;
+
+    [SerializeField]
+    private UnityEvent<float> onHealthChange;
+
+    public int CurrentPlayerHealth
+    { get
+        {
+            return currentPlayerHealth;
+        }
+        set  
+        {
+            currentPlayerHealth = value; 
+            onHealthChange?.Invoke((float)currentPlayerHealth / playerHealth);
+        } 
+    }
 
     private void Awake()
     {
@@ -77,20 +94,27 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _playerSpeed = movementSpeed;
-        currentPlayerHealth = playerHealth;
+
+        if (currentPlayerHealth == 0) CurrentPlayerHealth = playerHealth;
+
         SelectedWeapon();
         cooldown = 0f;
     }
 
     private void FixedUpdate()
     {
+        Debug.Log(CurrentPlayerHealth);
         cooldown -= Time.fixedDeltaTime;
         PlayerDirection();
         PlayerRotation();
         AimWeapon();
-        if (_weapon.GetHoldShoot() == true)
+        
+        if(_weapon != null)
         {
-            WeaponHoldShoot();
+            if (_weapon.GetHoldShoot() == true)
+            {
+                WeaponHoldShoot();
+            }
         }
 
         if(cooldown <= 0)
@@ -121,14 +145,16 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat("Vertical", lookDir.y);
         ChangeWeapon();
     }
+
     
+
 
     public void DamageToPlayer(int damage)
     {
         if (cooldown <= 0f)
         {
-            currentPlayerHealth -= damage;
-            if (currentPlayerHealth <= 0)
+            CurrentPlayerHealth -= damage;
+            if (CurrentPlayerHealth <= 0)
             {
                 Time.timeScale = 0f;
                 _textUI.text = "Defeat";
@@ -136,18 +162,15 @@ public class PlayerController : MonoBehaviour
             }
             cooldown = immortalTime;
         }
-        _healthBar.UpdateHealthBar(playerHealth, currentPlayerHealth);
     }
 
     public void Heal(int heal)
     {
-        Debug.Log(currentPlayerHealth);
-        currentPlayerHealth += heal;
-        if (currentPlayerHealth >= 10)
+        CurrentPlayerHealth += heal;
+        if (CurrentPlayerHealth >= 10)
         {
-            currentPlayerHealth = playerHealth;
+            CurrentPlayerHealth = playerHealth;
         }
-        _healthBar.UpdateHealthBar(playerHealth, currentPlayerHealth);
     }
 
     private void PlayerDirection()
@@ -263,14 +286,23 @@ public class PlayerController : MonoBehaviour
         if (changeSlot == 0)
         {
             selectedWeapon = 0;
+            borders[0].color = Color.green;
+            borders[1].color = Color.white;
+            borders[2].color = Color.white;
         }
         else if (changeSlot == 1 && _gunPosition.childCount >= 2 && _gunPosition.GetChild(1) != null)
         {
             selectedWeapon = 1;
+            borders[0].color = Color.white;
+            borders[1].color = Color.green;
+            borders[2].color = Color.white;
         }
         else if (changeSlot == 2 && _gunPosition.childCount >= 3 && _gunPosition.GetChild(2) != null)
         {
             selectedWeapon = 2;
+            borders[0].color = Color.white;
+            borders[1].color = Color.white;
+            borders[2].color = Color.green;
         }
 
         if (previousSelectedWeapon != selectedWeapon)
@@ -313,16 +345,19 @@ public class PlayerController : MonoBehaviour
 
     public void ESCInput()
     {
-        if(!_isGamePause)
+        if(CurrentPlayerHealth > 0)
         {
-            GameManager.Pause();
-            _isGamePause = true;
-            _textUI.text = "Pause";
-        }
-        else
-        {
-            GameManager.Resume();
-            _isGamePause = false;
+            if (!_isGamePause)
+            {
+                Time.timeScale = 0f;
+                _isGamePause = true;
+                _textUI.text = "Pause";
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                _isGamePause = false;
+            }
         }
     }
 
@@ -342,6 +377,8 @@ public class PlayerController : MonoBehaviour
             {
                 weapon.gameObject.SetActive(false);
             }
+
+            //Add gun to slot
             GameObject newWeapon = Instantiate(other.gameObject);
             newWeapon.transform.parent = _gunPosition;
             newWeapon.transform.position = _gunPosition.position;
@@ -350,6 +387,11 @@ public class PlayerController : MonoBehaviour
             _weapon = newWeapon.GetComponent<GunSystem>();
             changeSlot = _gunPosition.childCount - 1;
             Destroy(other.gameObject);
+
+            //Add weapon sprite to UI
+            int weaponImageCount = _gunPosition.childCount - 1;
+            _weaponImages[weaponImageCount].enabled = true;
+            _weaponImages[weaponImageCount].sprite = _weapon.GetImage();
         }
 
         _lightTrigger = other.GetComponent<LightTrigger>();

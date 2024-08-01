@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class GunSystem : MonoBehaviour
 {
+    [SerializeField]
+    private Sprite _weaponImages;
+
     [Header("-----Muzzle Flash-----")]
     [SerializeField]
     private Transform _muzzleFlashPosition;
@@ -25,6 +28,8 @@ public class GunSystem : MonoBehaviour
     [SerializeField]
     private int amountOfProjectile;
     [SerializeField]
+    private float rateOfFire;
+    [SerializeField]
     private LayerMask _target;
     [SerializeField]
     private AudioClip gunAudioClip;
@@ -34,19 +39,29 @@ public class GunSystem : MonoBehaviour
     private bool holdShoot;
 
     private int gunDamage;
+    private float lastShot = 0;
+
+    private void Update()
+    {
+    }
 
     public virtual void Shoot()
     {
-        MuzzleFlash _muzzleFlash = (MuzzleFlash)PoolManager.Instance.Spawn(muzzleFlashName);
-        _muzzleFlash.transform.position = _muzzleFlashPosition.position;
-        _muzzleFlash.transform.rotation = _muzzleFlashPosition.rotation;
-        _muzzleFlash.transform.SetParent(_muzzleFlashPosition.transform);
-        SoundManager.PlaySound(gunAudioClip, gunVolume);
-
-        for (int i = 0; i < amountOfProjectile; i++)
+        if(Time.time > lastShot + rateOfFire)
         {
-            ShootingRay();
+            MuzzleFlash _muzzleFlash = (MuzzleFlash)PoolManager.Instance.Spawn(muzzleFlashName);
+            _muzzleFlash.transform.position = _muzzleFlashPosition.position;
+            _muzzleFlash.transform.rotation = _muzzleFlashPosition.rotation;
+            _muzzleFlash.transform.SetParent(_muzzleFlashPosition.transform);
+            SoundManager.PlaySound(gunAudioClip, gunVolume);
+
+            for (int i = 0; i < amountOfProjectile; i++)
+            {
+                ShootingRay();
+            }
+            lastShot = Time.time;
         }
+        
     }
 
     private void ShootingRay()
@@ -87,5 +102,10 @@ public class GunSystem : MonoBehaviour
     public bool GetHoldShoot()
     {
         return holdShoot;
+    }
+
+    public Sprite GetImage()
+    {
+        return _weaponImages;
     }
 }

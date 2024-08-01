@@ -110,7 +110,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 672139751
-  m_SortingLayer: 7
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_Sprite: {fileID: -8581394999056651373, guid: cf085b78585bdbf43ae92d84a844bf22, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -204,6 +204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 5021020475446763122, guid: 642005ac99b583943b035989889ba65c, type: 3}
+  _textUI: {fileID: 0}
+  _weaponImages: []
+  borders: []
   playerHealth: 10
   movementSpeed: 10
   dashSpeed: 30
@@ -212,6 +215,21 @@ MonoBehaviour:
   barrier: {fileID: 8452194719981281170}
   selectedWeapon: 0
   _gunPosition: {fileID: 8316778267488843503}
+  onHealthChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!50 &1559135788711404359
 Rigidbody2D:
   serializedVersion: 4
@@ -279,7 +297,7 @@ TrailRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1405667469
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Time: 0.1
   m_PreviewTimeScale: 1
@@ -406,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 27b5569a632c04f4e8a0c981af48cce9, type: 3}
       propertyPath: m_SortingLayer
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 27b5569a632c04f4e8a0c981af48cce9, type: 3}
       propertyPath: m_SortingLayerID
