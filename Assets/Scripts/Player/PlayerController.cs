@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +16,8 @@ public class PlayerController : MonoBehaviour
     [Header("-----Player UI-----")]
     [SerializeField]
     private TMP_Text _textUI;
+    [SerializeField]
+    private Button _rBTN;
     [SerializeField]
     private Image[] _weaponImages;
     [SerializeField]
@@ -156,6 +157,7 @@ public class PlayerController : MonoBehaviour
             CurrentPlayerHealth -= damage;
             if (CurrentPlayerHealth <= 0)
             {
+                Destroy(gameObject);
                 Time.timeScale = 0f;
                 _textUI.text = "Defeat";
                 _textUI.color = Color.red;
@@ -385,6 +387,7 @@ public class PlayerController : MonoBehaviour
             newWeapon.transform.rotation = _gunPosition.rotation;
             newWeapon.transform.localScale = Vector3.one;
             _weapon = newWeapon.GetComponent<GunSystem>();
+            _weapon.GetComponent<Collider2D>().enabled = false;
             changeSlot = _gunPosition.childCount - 1;
             Destroy(other.gameObject);
 
@@ -392,6 +395,16 @@ public class PlayerController : MonoBehaviour
             int weaponImageCount = _gunPosition.childCount - 1;
             _weaponImages[weaponImageCount].enabled = true;
             _weaponImages[weaponImageCount].sprite = _weapon.GetImage();
+        }
+
+        if(other.gameObject.CompareTag("Finish"))
+        {
+            SaveSystem.instance.ResetData();
+            Destroy(gameObject);
+            Time.timeScale = 0f;
+            _textUI.text = "You can escape!";
+            _textUI.color = Color.white;
+            _rBTN.gameObject.SetActive(false);
         }
 
         _lightTrigger = other.GetComponent<LightTrigger>();

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a52ea7c56694b428126d197a5dcedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponImages: {fileID: -8743985451709654404, guid: 3eaac0d71040526448ff7952906838c0, type: 3}
+  _weaponImages: {fileID: 21300000, guid: b9842980eaacfd740b425f7c34882299, type: 3}
   _muzzleFlashPosition: {fileID: 2570614999236236401}
   muzzleFlashName: MuzzleFlash01
   tracerEffect: {fileID: 2625194065172106202, guid: 1378595116e46734f9f5d1e8bbe73ea6, type: 3}

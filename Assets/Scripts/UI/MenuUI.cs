@@ -47,7 +47,7 @@ public class MenuUI : MonoBehaviour
     public void ExitGame()
     {
 #if UNITY_STANDALONE
-        Application.Quit();
+        Application.OpenURL("about:Blank");
 #endif
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

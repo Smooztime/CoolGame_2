@@ -11,6 +11,7 @@ public class SaveSystem : MonoBehaviour
     public LoadedData LoadedData {  get; private set; }
 
     public UnityEvent<bool> OnDataLoadedResult;
+    public UnityEvent<bool> OnSaveDataCheck;
 
     public static SaveSystem instance;
 
@@ -31,18 +32,21 @@ public class SaveSystem : MonoBehaviour
     {
         var result = LoadData();
         OnDataLoadedResult?.Invoke(result);
+
     }
 
     public bool LoadData()
     {
-        if(PlayerPrefs.GetInt(savePresentKey) == 1)
+        bool dataPresent = PlayerPrefs.GetInt(savePresentKey) == 1;
+        if (dataPresent)
         {
             LoadedData = new LoadedData();
             LoadedData.playerHealth = PlayerPrefs.GetInt(playerHealthKey);
             LoadedData.sceneIndex = PlayerPrefs.GetInt(sceneKey);
             return true;
         }
-        return false;
+        OnSaveDataCheck?.Invoke(dataPresent);
+        return dataPresent;
     }
 
     public void SaveData(int sceneIndex, int playerHealth)

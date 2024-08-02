@@ -11,7 +11,6 @@ public enum SoundType
     BombExplode
 }
 
-[RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
 {
     [SerializeField]
@@ -37,14 +36,17 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        _sfxSource = GetComponent<AudioSource>();
-        _musicSource = GetComponent<AudioSource>();
+        _sfxSource = gameObject.AddComponent<AudioSource>();
+        _musicSource = gameObject.AddComponent<AudioSource>();
+        _musicSource.loop = true;
         PlaySoundMusic(SoundType.BackGroundMusic,0.3f);
     }
 
     private void PlaySoundMusic(SoundType sound, float volume = 1)
     {
-        instance._musicSource.PlayOneShot(instance.SoundList[(int)sound], volume);
+        _musicSource.clip = instance.SoundList[(int)sound];
+        _musicSource.volume = volume;
+        _musicSource.Play();
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)
